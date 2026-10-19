@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# ./run <items.json> --budget <1x|3x|10x> --out <answers.json>
+root="$(cd "$(dirname "$0")" && pwd)"
+py="$root/.venv/bin/python"; [ -x "$py" ] || py=python3
+exec "$py" "$root/src/harness.py" "$@"

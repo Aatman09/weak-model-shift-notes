@@ -1,0 +1,30 @@
+# Pinned dependencies for the shift-notes harness.
+#
+# Python version: 3.12.12 (the .venv in this directory; pinned transitive
+# versions below were frozen from a working install on that interpreter).
+#
+# Install:
+#   python3 -m venv .venv
+#   .venv/bin/python -m pip install -r requirements.txt
+#   # ...or, without pip in the venv:
+#   uv pip install --python .venv/bin/python -r requirements.txt
+#
+# `openai` is the only direct dependency: it is the client pointed at the
+# provided endpoint (base_url from .env). Everything below it is a transitive
+# pin, frozen so a re-run resolves the same versions.
+
+annotated-types==0.8.0
+anyio==4.15.1
+h11==0.16.0
+httpcore2==2.13.1
+httpx2==2.13.1
+idna==3.20
+jiter==0.17.0
+# direct dependency
+openai==3.35.1
+pydantic==2.14.1
+pydantic-core==2.50.1
+sniffio==1.3.1
+truststore==0.10.5
+typing-extensions==4.16.0
+typing-inspection==0.4.4

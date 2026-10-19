@@ -1,0 +1,20 @@
+# credentials — never commit
+.env
+
+# environment and caches
+.venv/
+__pycache__/
+
+# generated artifacts (regenerable from code, not part of the submission)
+outputs/*
+!outputs/.gitkeep
+
+# tooling / editor state
+.claude/
+.vscode/
+.idea/
+graphify-out/
+*.lock
+.DS_Store
+*.log
+nohup.out
