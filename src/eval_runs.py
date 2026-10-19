@@ -23,13 +23,13 @@ from solve import solve_all               # noqa: E402
 
 def run_score(items: list[dict], key: dict, raws: dict[str, list[str]],
               pick: list[int], drop: tuple[str, ...] = (),
-              minimal: bool = True) -> dict:
+              minimal: bool = True, threshold: float = 0.2) -> dict:
     entries = []
     for it in items:
         entry = {"id": it["id"], **parse_header(it["text"])}
         _, body = split_item(it["text"])
         samples = [parse_sample(raws[it["id"]][j], entry, body) for j in pick]
-        chosen = vote(samples, body)
+        chosen = vote(samples, body, threshold)
         facts = [{"line": ln, **f, "text": t} for ln, t in body
                  if (f := chosen.get(ln)) is not None]
         entries.append({**entry, "facts": facts})
@@ -40,8 +40,12 @@ def run_score(items: list[dict], key: dict, raws: dict[str, list[str]],
 def main() -> None:
     base = Path(sys.argv[1])
     root = Path(__file__).resolve().parent.parent
-    items = json.loads((root / "data/items.json").read_text())
-    key = json.loads((root / "data/visible_key.json").read_text())
+    if "--proxy" in sys.argv:        # held-out phrasing proxy (see paraphrase.py)
+        items = json.loads((root / "data/heldout_proxy/items.json").read_text())
+        key = json.loads((root / "data/heldout_proxy/key.json").read_text())
+    else:
+        items = json.loads((root / "data/items.json").read_text())
+        key = json.loads((root / "data/visible_key.json").read_text())
     raws = json.loads(Path(str(base) + ".raw.json").read_text())
     n = min(len(v) for v in raws.values())
 

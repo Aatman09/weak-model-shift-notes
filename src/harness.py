@@ -50,7 +50,7 @@ def make_complete(args: argparse.Namespace):
                       {"role": "user", "content": user}],
             temperature=1.0,
             top_p=0.95,
-            max_tokens=600,
+            max_tokens=1000,
             extra_body=extra_body,
             extra_headers={"X-Item-Id": item_id},
         )
@@ -68,7 +68,7 @@ def main() -> None:
     ap.add_argument("--base-url", default=None)
     ap.add_argument("--api-key", default=None)
     ap.add_argument("--limit", type=int, default=0)
-    ap.add_argument("--workers", type=int, default=6)
+    ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--drop", default="",
                     help="fact types to ignore (ablation), comma-separated")
     args = ap.parse_args()

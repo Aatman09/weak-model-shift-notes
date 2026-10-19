@@ -1,55 +1,65 @@
 # Architecture under a fixed, weak model: write-up
 
-**Headline.** Granite 8B with this harness reaches **34% macro exact match at 1x** (mean of three runs, range 33–35%) and **37% at 3x** on the 60 visible items, against 0% one-shot. 10x was not run. These numbers come from a local Ollama copy of `granite4.2:8b` (Q4_K_M), not the provided endpoint, because the endpoint key hit its $50 limit during development (see "Where it breaks"). Each 1x figure is one saved run; the 3x figure is one run of three calls per item. Full table: `docs/ablations.md`.
+**Headline.** Measured on the provided endpoint (`ibm-granite/granite-4.2-8b`, temperature 1.0, top_p 0.95, thinking off), on the 60 visible items, macro exact match:
+
+| Budget | Visible wording | Re-worded constraint lines (held-out proxy) |
+|---|---|---|
+| 1x | 65.0% (mean of ten runs; range 56.7–71.7%) | 45.3% (41.7–50.0%) |
+| 3x | 72.8% (mean of three disjoint triples; 70.0–76.7%) | 52.2% (50.0–55.0%) |
+| 10x | 73.3% (one run) | 55.0% (one run) |
+
+One-shot Granite scores 0.0%. The proxy drop of about 20 points is my best estimate of what unseen wording costs. Full tables, including every ablation, are in `docs/ablations.md`.
 
 ## How I characterised the model
 
-I started with a one-call-per-item run and read the replies. The model could not produce a schedule. Then I asked a narrower question: can it classify one note sentence at a time? That was much better. It picks the right constraint type for most sentences ("Meera sits between Tomas and Rohan", "Packing is covered by someone other than Ayesha") and it ignores filler, wishes and old arrangements most of the time. Three further findings shaped the design:
+One call per item with no scaffolding gives no usable schedule. So I asked a narrower question: can it classify a single sentence? I read many replies and found:
 
-1. **Its failures are lopsided.** Per sentence, it misses a real constraint far more often than it invents one. On the 1x run with the second prompt: 214 missed, 37 wrong, 16 invented. A missed constraint leaves too many candidate schedules, so the item is declared ambiguous or gets the wrong ambiguous set.
-2. **It rambles.** Often it labels a line and then starts reasoning in the output ("…Wait need correct unique labeling…"). Over 180 calls only 80% of note lines received a label, and 74 of 180 calls labelled under 90% of their lines. This is the largest loss I did not fix.
-3. **Format matters more than wording.** In JSON, one stray quote (`"line":5"`) invalidated a whole reply. When I added example annotations to the prompt, it copied them and spent its tokens on them. A flat `L5 | type | args` line, with the middle person of `between` written first, worked best.
+1. **Per sentence it is decent; per page it is not.** It usually picks the right constraint type for a sentence, and usually ignores filler, wishes and old arrangements. It cannot combine eight or so constraints into one schedule.
+2. **Its errors are mostly misses.** On the final prompt, over ten samples per item, 489 constraints were missed, 213 were labelled with the wrong arguments and only 22 were invented (4668 correct). A missed constraint leaves too many schedules, so the item is declared ambiguous.
+3. **It is inconsistent on the same sentence.** The same line is labelled correctly in one sample and `none` in the next. Voting helps with this kind of error.
+4. **It rambles.** Often it writes a label and keeps reasoning, then runs out of tokens. The final run labelled 93% of note lines on average, and 98 of 600 calls labelled fewer than 90%.
+5. **Format matters more than wording.** One stray quote in JSON invalidated a whole reply, and example annotations in the prompt were copied by the model. Flat `L5 | type | args` lines worked best.
 
-## What each component is for
+## Components and why each exists
 
-- **Model labels each line (the only place the model is used).** It outputs one constraint per note line from a closed list of eight types or `none`. The rest of the pipeline depends only on these labels, so a different model output changes the answer.
-- **Validation against the header.** Every name, time and station must be on the rota; anything else is dropped. This removes invented names.
-- **Symbolic solver.** It enumerates every assignment, keeps the ones satisfying all labelled constraints, and classifies the item by the count (0 = inconsistent, 1 = unique, 2–4 = ambiguous). The model never has to reason about combinations, which is what it cannot do.
-- **Minimal-conflict citations.** For inconsistent items the solver deletes constraints one at a time and keeps those whose removal makes the set satisfiable. Citations are taken from the note by line number, so they are always verbatim. Ablation: citing every constraint drops the 1x score from 34.4% to 23.9%.
-- **Per-line majority vote at 3x / 10x.** Independent samples are combined line by line.
+- **Model labels each note line** with one of eight constraint types or `none` (the only place the model is used). The prompt gives a rubric per type, with several paraphrases, plus rules: hedges and "noted twice" prefixes do not weaken a line, failed requests and the past are `none`, write the earlier person first, and when unsure, label.
+- **Validation against the header:** names, times and stations must exist on the rota; otherwise the label is dropped.
+- **Symbolic solver:** enumerates every assignment, keeps the ones satisfying all labels, and classifies by count (0 inconsistent, 1 unique, 2–4 ambiguous). The model never reasons about combinations.
+- **Minimal-conflict citations:** deletes constraints one at a time and keeps a minimal contradictory set. Citations come from the note by line number, so they are verbatim. Citing every constraint instead drops 1x from 65.0% to 41.2%.
+- **Per-line vote at 3x/10x:** a sample that never labelled a line abstains; the most common label wins if more than 20% of the voting samples chose it. Because misses dominate, favouring recall beats a strict majority (10x: 73.3% vs 70.0%).
 
-## What each label type is worth (ablation, 1x mean)
-
-Ignoring a type's labels costs: `station_before` −20 points, `between` −17, `immediately_before` −14, `block` −14, `before` −11, `station` −10, `not_block` −6, `not_station` −3. `between` and `station_before` carry the score and are also where the model misses the most.
+Which labels carry the score (1x, ignoring a type): `station_before` −38 points, `between` −37, `block` −26, `station` −25, `immediately_before` −24, `before` −17, `not_block` −15, `not_station` −14.
 
 ## What I built and removed
 
-- **Whole-array JSON output.** Removed: one malformed element lost the item. Replaced by one line per note.
-- **Rules-based extractor (`src/extract.py`).** It scores 100% on the visible items but is built from the visible phrasings, so it is exactly the thing the held-out set is designed to break. It is not in the submitted path. I kept it as a reference to measure the model's labels and as an ablation row (100%, no model, not a valid submission).
-- **Explanatory annotations in the prompt examples.** Removed: the model copied them.
-- **Sending `{"reasoning": {"enabled": false}}` to Ollama.** This does not disable thinking there and used up the token cap; locally the harness sends `reasoning_effort: "none"` instead. Calls to the provided endpoint are unchanged.
-- **Cutting off trailing commentary on a label line.** Kept. It moved 1x results by about one item, so I count it as neutral.
+- **Rules-based extractor** (`src/extract.py`): 100% on the visible items, 0.0% on the re-worded notes. It is built from the visible phrasings, so it is not in the submitted path; it is the reference I measure the model's labels against.
+- **Whole-array JSON output:** removed after one malformed element lost whole items.
+- **Annotated prompt examples:** removed because the model copied the annotations.
+- **Swapping arguments by token type:** tried and removed; it changed nothing on saved replies.
+- **A local run on a Q4 Ollama copy:** useful for development but not comparable (34% at 1x with the first prompt; more rambling), so it is not used for the headline.
+
+Prompt versions on the endpoint went from 40% to 63% at 1x (table in `docs/ablations.md`).
 
 ## Where it breaks
 
-- **Truncation and rambling** (above). A line the model never labels cannot be recovered by voting or by the solver.
-- **Over-declaring ambiguous.** On the 3x vote, 12 of 20 unique items were declared ambiguous, because a missed constraint leaves several candidates. 25 of 60 items had more than four candidates, which the solver can only answer with a wrong ambiguous guess. The directions of error are therefore the "honest failure" kind the brief describes, but they are still wrong answers. Kind accuracy is much higher than exact match: ambiguous 17/20, inconsistent 12/20, unique 5/20 correct kind on the 3x vote.
-- **Voting helps little.** 3x is about two points above the 1x mean, within the run-to-run spread. The errors are systematic (the same phrasing is missed in every sample), so independent samples agree on them.
-- **Held-out wording is untested.** I have no measurement on unseen phrasings. The prompt's examples come from the visible notes' sentence shapes, so I expect some drop.
-- **Not verified end to end on the provided endpoint.** The key reached its limit, so the budget proxy and `X-Item-Id` header were not exercised against the real endpoint. The code sends the header on every call and makes exactly 1, 3 or 10 calls per item.
-- **10x not run.** At about one minute per call on my GPU it is a ten-hour run. I did not run it, and I do not report a number for it.
-- **Sampling variance.** Three 1x runs on the same prompt scored 33%, 35% and 35%.
+- **I tuned on the visible items.** The rubric describes phrasing families I saw there, so the visible score flatters the system. The proxy (my own new phrasings, not the graders') is the fairer number, and even it keeps the original filler and wish lines unchanged.
+- **Misses and rambling.** Missed constraints, mostly `between`, `not_station` and `station_before`, produce the main error: unique items declared ambiguous (4 of 20 at 10x), and ambiguous items with the wrong set of assignments. Voting cannot fix a phrasing the model misses in every sample.
+- **Wrong direction or wrong middle person** on some `immediately_before` and `between` labels, which voting does not repair.
+- **1x timeouts are not retried.** In one end-to-end 1x run, four calls timed out and those items scored zero; the budget forbids a second call, so the real 1x score has this extra variance (that run scored 60.0%).
+- **Voting gives about +8 points at 3x and almost nothing from 3x to 10x.**
+- **Not verified:** the counting proxy that enforces the budget; the code sends `X-Item-Id` on every call and makes exactly 1, 3 or 10 calls per item (checked from saved runs).
+- **Case matrix at 10x (true to declared):** unique 14 / 4 ambiguous / 2 inconsistent; ambiguous 0 / 17 / 3; inconsistent 3 / 0 / 17. Over-declaring ambiguous is the main error direction, as the brief anticipates.
 
 ## Extraction: model-based or symbolic, and different authors
 
-Constraint extraction is **model-based**. Two parts are symbolic: the **header** (rota, blocks, stations, who holds a station) is read with a regular expression, and the **solver**. The rules extractor in `src/extract.py` is symbolic but not part of the submission.
+Constraint extraction is **model-based**. Two parts are symbolic: the **header** (rota, blocks, stations, who holds a station) is parsed with a regular expression, and the **solver**. The rules extractor is symbolic and not part of the submission.
 
-If the notes were written by different people, the model-based labelling should degrade more gracefully than templates, because it classifies meaning into a closed list rather than matching strings; the rules extractor would fail on every unseen phrasing. I can only argue this, not show it: the 8B model is weak, my examples reflect the visible wording, and the header regex assumes the generator's exact header sentence. A real author might also write constraints that do not fit the eight types.
+With different authors the model will see wording outside my rubric. The proxy suggests a loss of roughly 20 points at every budget, concentrated in `before`, `between` and `station_before`, where the new phrasings are less like the examples. A closed list of eight constraint types limits the damage, but a real author's constraints may not fit the list at all, and the header regex assumes the generator's header sentence.
 
 ## With a month
 
-1. **Constrained decoding** (a grammar for the label lines), which removes rambling and invalid output and should push coverage to about 100%.
-2. **Solver-guided repair** at 3x/10x: when the solver finds more than four candidates, ask the model only about lines it labelled `none` that mention a person, rather than resampling everything.
-3. **A held-out paraphrase set**, built by rewriting the visible notes in new styles, to measure generalisation instead of arguing it.
-4. A model-based header parser, and a ninth type for constraints outside the current list.
-5. A faster serving setup, so that 10x and many repeated runs are practical.
+1. **Constrained decoding** (a grammar for the label lines) to remove rambling and invalid output.
+2. **Solver-guided repair** at 3x/10x: when the solver finds more than four candidates, re-ask only about lines labelled `none` that mention a person.
+3. **A larger and more varied paraphrase set** (including filler and wishes), and tuning against it rather than the visible notes.
+4. A model-based header parser, and an open-ended "other" constraint type.
+5. Retry policy for timed-out calls within the budget at 3x/10x.

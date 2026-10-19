@@ -3,8 +3,8 @@
 
     python3 src/ablate.py outputs/local_3x.json > docs/ablations.md
 
-1x rows are the mean over each saved sample scored as its own 1x run (the spread is
-shown); 3x rows are the per-line majority vote over the three samples.
+1x is the mean over each saved sample scored as its own 1x run (spread shown); 3x is the per-line vote
+over disjoint triples of samples (mean and range); 10x is the vote over all 10.
 """
 
 from __future__ import annotations
@@ -32,26 +32,34 @@ def main() -> None:
     raws = json.loads(Path(sys.argv[1] + ".raw.json").read_text())
     n = min(len(v) for v in raws.values())
 
-    def row(label: str, drop: tuple[str, ...] = (), minimal: bool = True) -> str:
-        singles = [run_score(items, key, raws, [j], drop, minimal)["macro_exact_match"]
-                   for j in range(n)]
-        vote = run_score(items, key, raws, list(range(n)), drop, minimal)
-        return (f"| {label} | {st.mean(singles):.1%} ({min(singles):.1%}-{max(singles):.1%}) "
-                f"| {vote['macro_exact_match']:.1%} |")
+    def row(label: str, drop: tuple[str, ...] = (), minimal: bool = True,
+            threshold: float = 0.2) -> str:
+        def sc(pick: list[int]) -> float:
+            return run_score(items, key, raws, pick, drop, minimal, threshold)["macro_exact_match"]
+        singles = [sc([j]) for j in range(n)]
+        cells = [f"{st.mean(singles):.1%} ({min(singles):.1%}-{max(singles):.1%})"]
+        if n >= 3:   # 3x: mean over disjoint triples of the saved samples
+            trip = [sc(list(range(i, i + 3))) for i in range(0, n - n % 3, 3)]
+            cells.append(f"{st.mean(trip):.1%} ({min(trip):.1%}-{max(trip):.1%})")
+        else:
+            cells.append("n/a")
+        cells.append(f"{sc(list(range(10))):.1%}" if n >= 10 else "n/a")
+        return f"| {label} | " + " | ".join(cells) + " |"
 
     entries = [extract_item(it) for it in items]
     rules, _ = solve_all(entries)
     rules_score = score(key, rules, items)["macro_exact_match"]
 
-    print("| Configuration | 1x: mean (range of 3 runs) | 3x: majority vote |")
-    print("|---|---|---|")
+    print(f"| Configuration | 1x: mean (min-max of {n} runs) | 3x: vote, mean (min-max) of disjoint triples | 10x: vote |")
+    print("|---|---|---|---|")
     print(row("Full system (model labels + solver + minimal-conflict citations)"))
+    print(row("- majority vote (accept only labels most samples agree on)", threshold=0.5))
     print(row("- cite every constraint instead of a minimal conflict", minimal=False))
     for t in TYPES:
         print(row(f"- ignore `{t}` labels", drop=(t,)))
     print(f"| Rules-only extractor + solver (no model; not a valid submission) "
-          f"| {rules_score:.1%} | {rules_score:.1%} |")
-    print("| One-shot Granite, no harness (from the brief) | 0.0% | n/a |")
+          f"| {rules_score:.1%} | {rules_score:.1%} | {rules_score:.1%} |")
+    print("| One-shot Granite, no harness (from the brief) | 0.0% | n/a | n/a |")
 
 
 if __name__ == "__main__":

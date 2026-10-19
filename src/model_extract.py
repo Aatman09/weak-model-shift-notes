@@ -43,31 +43,47 @@ Types and arguments (names, times and stations exactly as in the header):
   none                             the line constrains nothing
 
 How to decide:
-- A line that says where someone works (a block or a station), where they do not, or how two \
-people's blocks are ordered IS a constraint. Label it. Most lines that name people are.
+- Every line is either a constraint about who works which block or station, or it is none. \
+Decide quickly from the first match below and never explain or hesitate: no "Wait", no "?", no notes.
+- A line that says where someone works (a block or a station), where they do NOT, or how two \
+people's blocks are ordered IS a constraint. Label it. Most lines that name a person are.
 - Hedges ("I'm fairly sure", "as far as I know", "from memory", "going off the roster") and \
 restatement prefixes ("It bears repeating:", "Noted twice in the handover:", "This came up more \
-than once, so:") do NOT weaken a line. Ignore them and label the statement itself.
-- Use none ONLY for: filler (deliveries, keys, surveys, the jacket, car-sharing, walkarounds); \
-requests that were refused ("lobbied for 11:00 without success", "put in for the 13:00 block and \
-was turned down", "wanted 15:00 and did not get it" -- these say nothing about the real block); \
-regrets and hypotheticals ("would have been a better fit for", "If X had taken ..."); old \
-arrangements ("back in the old arrangement", "in the spring ... held"); open questions \
-("nobody could remember whether", "came up, but nothing was minuted", "some disagreement about \
-whether").
-- Always write the EARLIER person first for before / immediately_before / station_before.
-  "B comes later than A", "A is done before B starts", "by the time B starts, A has already been on", \
-"B takes over from A later in the day"  ->  before A then B.
+than once, so:") do NOT weaken a line. Skip over them and label the statement itself.
+- Ordering lines. Always write the EARLIER person first for before / immediately_before / \
+station_before.
+  "B comes later than A", "A is on earlier than B", "A's block falls earlier than B's", "A is done \
+before B starts", "by the time B starts, A has already been on", "B takes over from A later in the \
+day"  ->  before A then B.
   "B relieves A directly", "B is on the block directly after A", "A hands straight over to B", \
-"A then B, back to back", "no block between A's and B's, in that order"  ->  immediately_before A then B.
-  "P is on later than whoever has packing", "the person on packing precedes P", "packing is \
-covered earlier in the day than P's block"  ->  station_before packing then P.
-- "X sits between A and B", "put X between A and B, not necessarily next to either", "whichever \
-way round A and B are, X is between them", "X is on after one of A and B and before the other" \
-->  between X between A and B.   (The middle person X is the one written FIRST.)
-- "S is covered by someone other than P", "S is not P's station", "P has not been put on S", \
-"P is not assigned to S"  ->  not_station P S.
-- "P is on S", "S is down to P", "P is assigned to S", "S is P's station"  ->  station P S.
+"A then B, back to back", "no block between A's and B's, in that order"  ->  \
+immediately_before A then B.
+  "P is on later than whoever has packing", "whoever has packing is on before P", "the person on \
+packing precedes P", "packing is covered earlier in the day than P's block", "whoever is on \
+intake works earlier in the day than P"  ->  station_before packing then P.  (A station name \
+plus a comparison of time is ALWAYS station_before, never none.)
+- Between lines. "X sits between A and B", "put X between A and B, not necessarily next to \
+either", "whichever way round A and B are, X is between them", "X is on after one of A and B and \
+before the other"  ->  between X between A and B.   (The middle person X is written FIRST.)
+- Block lines. "P takes 09:00", "P is the one who opens up at 09:00", "whoever drew the 09:00 \
+block, it was P"  ->  block P 09:00.   "You will not find P on the 09:00 block", "P is \
+unavailable at 09:00", "P has a commitment that rules out 09:00", "09:00 is the one block P is \
+not on"  ->  not_block P 09:00.
+- Station lines. "P is on S", "S is down to P", "P is assigned to S", "S is P's station"  ->  \
+station P S.   "S is covered by someone other than P", "S is not P's station", "P has not been \
+put on S", "P is not on S", "P is not assigned to S"  ->  not_station P S.
+- A request or wish that failed ("turned down", "did not get it") says nothing about the real \
+block: label it none, not not_block.
+- Use none ONLY for: filler (deliveries, keys, surveys, the jacket, car-sharing, walkarounds, \
+notes about bins); requests that were refused ("lobbied for 11:00 without success", "put in for \
+the 13:00 block and was turned down", "wanted 15:00 and did not get it"); regrets and \
+hypotheticals ("would have been a better fit for", "If X had taken ..."); anything about the \
+PAST ("last month", "in the spring", "back in the old arrangement", "used to", "took ... then") -- \
+past stations and blocks do NOT bind the current rota; open questions ("nobody could remember \
+whether", "came up, but nothing was minuted", "some disagreement about whether").
+- When unsure between a constraint label and none, choose the constraint label: a wrong label is \
+caught by a later check, but a missed constraint cannot be recovered. A line that pairs a person \
+with a block, a station, or another person's position in the day is almost never none.
 - Never invent names: arguments must be people, times or stations from the header.
 
 Examples (the notes themselves are not repeated in your output):
@@ -77,9 +93,14 @@ Examples (the notes themselves are not repeated in your output):
   "Ayesha takes over from Daniel later in the day."           ->  before | Daniel then Ayesha
   "Ingrid relieves Meera directly, with no block between."    ->  immediately_before | Meera then Ingrid
   "Tomas is on later than whoever has packing."               ->  station_before | packing then Tomas
+  "Whoever is on intake works earlier than Priya."            ->  station_before | intake then Priya
   "Whoever drew the 13:00 block, it was Rohan."               ->  block | Rohan 13:00
   "You will not find Daniel on the 15:00 block."              ->  not_block | Daniel 15:00
+  "Meera has not been put on intake."                         ->  not_station | Meera intake
+  "Priya is unavailable at 11:00."                            ->  not_block | Priya 11:00
   "Rohan put in for the 09:00 block and was turned down."     ->  none
+  "Tomas wanted 09:00 and did not get it."                    ->  none
+  "Last month Samuel was on calibration."                     ->  none
   "Nadia sits between Priya and Tomas on the rota."           ->  between | Nadia between Priya and Tomas
   "Put Rohan between Samuel and Priya, not next to either."   ->  between | Rohan between Samuel and Priya
   "Meera has the spare key."                                  ->  none
@@ -177,6 +198,7 @@ def fact_key(fact: Fact | None) -> str:
 
 # The model often keeps talking after a valid label on the same line; keep only the label.
 CUT = r"<-|#|->|\u2192|\(|\?|;|\.\s|:\s"
+QUOTED = re.compile(r"^\s*L?(\d+)\s*[|:]\s*[\"'].*?[\"']\s*(?:->|\u2192)\s*([a-z_]+(?:\s.*)?)$", re.I)
 LABEL = re.compile(r"^\s*L?(\d+)\s*[|:]\s*([a-z_]+)\s*(?:[|:]\s*(.*))?$", re.I)
 
 
@@ -186,6 +208,10 @@ def parse_sample(raw: str, entry: dict[str, Any],
     wanted = {i for i, _ in body}
     out: dict[int, Fact | None] = {}
     for row in raw.splitlines():
+        quoted = QUOTED.match(row)             # L6: "the note" -> type args
+        if quoted:
+            kind_args = quoted.group(2).split(None, 1)
+            row = f"L{quoted.group(1)} | {kind_args[0]} | " + (kind_args[1] if len(kind_args) > 1 else "")
         m = LABEL.match(re.split(CUT, row)[0])
         if not m:
             continue
@@ -204,20 +230,37 @@ def parse_sample(raw: str, entry: dict[str, Any],
     return out
 
 
-def vote(samples: list[dict[int, Fact | None]],
-         body: list[tuple[int, str]]) -> dict[int, Fact | None]:
-    """Per-line majority over samples; a missing line counts as 'none'."""
+def vote(samples: list[dict[int, Fact | None]], body: list[tuple[int, str]],
+         threshold: float = 0.5, abstain: bool = True) -> dict[int, Fact | None]:
+    """Per-line vote over samples.
+
+    A sample that never labelled a line abstains (abstain=True) instead of voting
+    "none". The most common non-none label wins if more than `threshold` of the
+    voting samples chose it; lowering the threshold favours recall, which is the
+    model's weak side (it misses constraints far more often than it invents them).
+    """
     result: dict[int, Fact | None] = {}
     for ln, _ in body:
-        keys = [fact_key(s.get(ln)) for s in samples]
-        best, _n = Counter(keys).most_common(1)[0]
-        pick = next((s.get(ln) for s in samples if fact_key(s.get(ln)) == best), None)
-        result[ln] = pick
+        voters = [s for s in samples if ln in s] if abstain else samples
+        if not voters:
+            result[ln] = None
+            continue
+        keys = [fact_key(s.get(ln)) for s in voters]
+        counts = Counter(k for k in keys if k != "none")
+        if not counts:
+            result[ln] = None
+            continue
+        best, n = counts.most_common(1)[0]
+        if n / len(voters) > threshold:
+            result[ln] = next(s.get(ln) for s in voters if fact_key(s.get(ln)) == best)
+        else:
+            result[ln] = None
     return result
 
 
 def extract_with_model(entry: dict[str, Any], item: dict[str, Any], calls: int,
-                       complete: Callable[[str, str, str], str]) -> tuple[dict[str, Any], dict[str, Any]]:
+                       complete: Callable[[str, str, str], str],
+                       threshold: float = 0.2) -> tuple[dict[str, Any], dict[str, Any]]:
     """Run `calls` model extractions for one item and vote.
 
     `complete(item_id, system, user)` makes exactly one chat call and returns the text.
@@ -235,7 +278,7 @@ def extract_with_model(entry: dict[str, Any], item: dict[str, Any], calls: int,
                   file=sys.stderr)
         raws.append(raw)
         samples.append(parse_sample(raw, entry, body))
-    chosen = vote(samples, body)
+    chosen = vote(samples, body, threshold)
     facts = []
     for ln, text in body:
         f = chosen.get(ln)
