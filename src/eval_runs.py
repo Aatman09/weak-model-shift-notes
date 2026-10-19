@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Offline scoring of a multi-sample run from its saved raw replies (no model calls).
 
-    python3 src/eval_runs.py outputs/local_3x.json
+    python3 src/eval_runs.py outputs/final_10x.json [--set visible|dev|test]
 
 Scores every single sample as a 1x run, and the per-line majority vote over the first
 k samples (k = 2..n) as a kx run.
@@ -28,7 +28,8 @@ def run_score(items: list[dict], key: dict, raws: dict[str, list[str]],
     for it in items:
         entry = {"id": it["id"], **parse_header(it["text"])}
         _, body = split_item(it["text"])
-        samples = [parse_sample(raws[it["id"]][j], entry, body) for j in pick]
+        samples = [parse_sample(raws[it["id"]][j], entry, body) for j in pick
+                   if j < len(raws[it["id"]])]       # focused runs may stop early
         chosen = vote(samples, body, threshold)
         facts = [{"line": ln, **f, "text": t} for ln, t in body
                  if (f := chosen.get(ln)) is not None]
@@ -37,17 +38,25 @@ def run_score(items: list[dict], key: dict, raws: dict[str, list[str]],
     return score(key, answers, items)
 
 
+def load_set(name: str) -> tuple[list[dict], dict]:
+    """visible (the given items), dev or test (re-worded proxies from paraphrase.py)."""
+    root = Path(__file__).resolve().parent.parent
+    if name == "visible":
+        return (json.loads((root / "data/items.json").read_text()),
+                json.loads((root / "data/visible_key.json").read_text()))
+    d = root / "data" / f"proxy_{name}"
+    return json.loads((d / "items.json").read_text()), json.loads((d / "key.json").read_text())
+
+
+def set_arg(default: str = "visible") -> str:
+    return sys.argv[sys.argv.index("--set") + 1] if "--set" in sys.argv else default
+
+
 def main() -> None:
     base = Path(sys.argv[1])
-    root = Path(__file__).resolve().parent.parent
-    if "--proxy" in sys.argv:        # held-out phrasing proxy (see paraphrase.py)
-        items = json.loads((root / "data/heldout_proxy/items.json").read_text())
-        key = json.loads((root / "data/heldout_proxy/key.json").read_text())
-    else:
-        items = json.loads((root / "data/items.json").read_text())
-        key = json.loads((root / "data/visible_key.json").read_text())
+    items, key = load_set(set_arg())
     raws = json.loads(Path(str(base) + ".raw.json").read_text())
-    n = min(len(v) for v in raws.values())
+    n = max(len(v) for v in raws.values())
 
     def show(label: str, res: dict) -> None:
         r = res["per_case_rate"]

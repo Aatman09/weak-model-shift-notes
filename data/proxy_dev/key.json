@@ -6,13 +6,13 @@
       [
         "Packing is not Meera's job.",
         "Calibration is not Meera's job.",
-        "Word is that Meera is kept off intake."
+        "Intake is not Meera's job."
       ],
       [
         "Packing is not Meera's job.",
-        "Ayesha has no part in calibration.",
+        "Calibration is not Ayesha's job.",
         "Calibration is not Meera's job.",
-        "Apparently, Ayesha isn't covering packing."
+        "Ayesha is kept off packing."
       ]
     ]
   },
@@ -159,16 +159,16 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "Per the whiteboard, whoever runs packing is on before Rohan.",
-        "I believe the 15:00 slot belongs to Priya.",
-        "The intake holder starts ahead of Nadia.",
-        "Ingrid comes on after the calibration person has already started."
+        "Apparently, whoever runs packing is on before Rohan.",
+        "Apparently, Priya will be covering 15:00.",
+        "Whoever runs intake is on before Nadia.",
+        "Per the whiteboard, the calibration holder starts ahead of Ingrid."
       ],
       [
-        "Per the whiteboard, whoever runs packing is on before Rohan.",
-        "I believe the 15:00 slot belongs to Priya.",
-        "The intake holder starts ahead of Nadia.",
-        "Ingrid is behind the calibration person in the order."
+        "Apparently, whoever runs packing is on before Rohan.",
+        "Apparently, Priya will be covering 15:00.",
+        "Whoever runs intake is on before Nadia.",
+        "Again, for the record: Per the whiteboard, whoever runs calibration is on before Ingrid."
       ]
     ]
   },
@@ -177,43 +177,43 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "Word is that Tomas is followed immediately by Nadia.",
-        "If memory serves, 07:00 is when Tomas works.",
-        "Nadia won't be in for 09:00."
+        "Nadia takes the slot straight after Tomas.",
+        "Per the whiteboard, 07:00 is when Tomas works.",
+        "Nadia is off at 09:00."
       ],
       [
-        "Word is that Tomas is followed immediately by Nadia.",
-        "Word is that Priya and Lukas are consecutive, Priya first.",
-        "Word is that Lukas will be covering 15:00.",
-        "If memory serves, 07:00 is when Tomas works.",
+        "Nadia takes the slot straight after Tomas.",
+        "Per the whiteboard, Lukas takes the slot straight after Priya.",
+        "Apparently, 15:00 is when Lukas works.",
+        "Per the whiteboard, 07:00 is when Tomas works.",
         "Word is that Daniel won't be in for 11:00."
       ],
       [
-        "Word is that Tomas is followed immediately by Nadia.",
-        "Word is that Priya and Lukas are consecutive, Priya first.",
-        "To the best of my knowledge, Priya comes on after the packing person has already started.",
-        "If memory serves, 07:00 is when Tomas works.",
+        "Nadia takes the slot straight after Tomas.",
+        "Per the whiteboard, Lukas takes the slot straight after Priya.",
+        "Word is that whoever runs packing is on before Priya.",
+        "Per the whiteboard, 07:00 is when Tomas works.",
         "Word is that Daniel won't be in for 11:00."
       ],
       [
-        "Word is that Tomas is followed immediately by Nadia.",
-        "Word is that Priya and Lukas are consecutive, Priya first.",
-        "To the best of my knowledge, Priya is behind the packing person in the order.",
-        "If memory serves, 07:00 is when Tomas works.",
+        "Nadia takes the slot straight after Tomas.",
+        "Per the whiteboard, Lukas takes the slot straight after Priya.",
+        "Same point as before: Whoever runs packing is on before Priya.",
+        "Per the whiteboard, 07:00 is when Tomas works.",
         "Word is that Daniel won't be in for 11:00."
       ],
       [
-        "Word is that Tomas is followed immediately by Nadia.",
-        "Word is that Lukas will be covering 15:00.",
-        "To the best of my knowledge, Priya comes on after the packing person has already started.",
-        "If memory serves, 07:00 is when Tomas works.",
+        "Nadia takes the slot straight after Tomas.",
+        "Apparently, 15:00 is when Lukas works.",
+        "Word is that whoever runs packing is on before Priya.",
+        "Per the whiteboard, 07:00 is when Tomas works.",
         "Word is that Daniel won't be in for 11:00."
       ],
       [
-        "Word is that Tomas is followed immediately by Nadia.",
-        "Word is that Lukas will be covering 15:00.",
-        "To the best of my knowledge, Priya is behind the packing person in the order.",
-        "If memory serves, 07:00 is when Tomas works.",
+        "Nadia takes the slot straight after Tomas.",
+        "Apparently, 15:00 is when Lukas works.",
+        "Same point as before: Whoever runs packing is on before Priya.",
+        "Per the whiteboard, 07:00 is when Tomas works.",
         "Word is that Daniel won't be in for 11:00."
       ]
     ]
@@ -295,18 +295,18 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "Per the whiteboard, whoever runs calibration is on before Rohan.",
-        "The intake holder starts ahead of Ingrid.",
-        "Per the whiteboard, Ingrid starts earlier in the day than Rohan.",
-        "In time order Priya lands somewhere in the middle of Rohan and Ingrid.",
-        "Apparently, Priya has no part in calibration."
+        "Apparently, Rohan comes on after the calibration person has already started.",
+        "Ingrid is behind the intake person in the order.",
+        "To the best of my knowledge, Ingrid starts earlier in the day than Rohan.",
+        "Priya is neither before both nor after both of Rohan and Ingrid.",
+        "Per the whiteboard, Priya isn't covering calibration."
       ],
       [
-        "Per the whiteboard, whoever runs calibration is on before Rohan.",
-        "The intake holder starts ahead of Ingrid.",
-        "Per the whiteboard, Ingrid starts earlier in the day than Rohan.",
-        "Apparently, Priya has no part in calibration.",
-        "Priya is sandwiched between Ingrid and Rohan in the schedule."
+        "Apparently, Rohan comes on after the calibration person has already started.",
+        "Ingrid is behind the intake person in the order.",
+        "To the best of my knowledge, Ingrid starts earlier in the day than Rohan.",
+        "Per the whiteboard, Priya isn't covering calibration.",
+        "Apparently, in time order Priya lands somewhere in the middle of Ingrid and Rohan."
       ]
     ]
   },
@@ -341,9 +341,9 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "If memory serves, Meera isn't covering intake.",
-        "If memory serves, Meera isn't covering calibration.",
-        "If memory serves, Meera has no part in packing."
+        "Intake is not Meera's job.",
+        "Meera has no part in calibration.",
+        "Meera is kept off packing."
       ]
     ]
   },
@@ -378,16 +378,16 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "Ayesha isn't covering calibration.",
+        "To the best of my knowledge, Ayesha isn't covering calibration.",
         "Word is that Nadia is followed immediately by Priya.",
-        "Word is that Daniel has the 15:00 slot.",
-        "Nadia is behind the calibration person in the order."
+        "15:00 is when Daniel works.",
+        "Word is that whoever runs calibration is on before Nadia."
       ],
       [
-        "Ayesha isn't covering calibration.",
+        "To the best of my knowledge, Ayesha isn't covering calibration.",
         "Word is that Nadia is followed immediately by Priya.",
-        "Word is that Daniel has the 15:00 slot.",
-        "Apparently, Nadia comes on after the calibration person has already started."
+        "15:00 is when Daniel works.",
+        "Again, for the record: To the best of my knowledge, Nadia comes on after the calibration person has already started."
       ]
     ]
   },
@@ -594,9 +594,9 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "If memory serves, Daniel steps in the moment Lukas finishes.",
-        "Per the whiteboard, the 13:00 slot belongs to Tomas.",
-        "Lukas is behind the intake person in the order."
+        "Per the whiteboard, Lukas and Daniel are consecutive, Lukas first.",
+        "Tomas will be covering 13:00.",
+        "Lukas comes on after the intake person has already started."
       ]
     ]
   },
@@ -631,46 +631,46 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "I believe Tomas will be covering 09:00.",
-        "To the best of my knowledge, in time order Daniel lands somewhere in the middle of Ayesha and Tomas.",
-        "Daniel takes the slot straight after Ayesha."
+        "Tomas has the 09:00 slot.",
+        "In time order Daniel lands somewhere in the middle of Ayesha and Tomas.",
+        "To the best of my knowledge, Ayesha and Daniel are consecutive, Ayesha first."
       ],
       [
-        "I believe Tomas will be covering 09:00.",
+        "Tomas has the 09:00 slot.",
         "Word is that Ayesha takes the slot straight after Priya.",
-        "If memory serves, the 13:00 slot belongs to Nadia."
+        "Per the whiteboard, Nadia will be covering 13:00."
       ],
       [
-        "I believe Tomas will be covering 09:00.",
+        "Tomas has the 09:00 slot.",
         "Word is that Ayesha takes the slot straight after Priya.",
-        "I believe the intake holder starts ahead of Tomas."
+        "Per the whiteboard, Tomas comes on after the intake person has already started."
       ],
       [
-        "I believe Tomas will be covering 09:00.",
+        "Tomas has the 09:00 slot.",
         "Word is that Ayesha takes the slot straight after Priya.",
-        "I believe Nadia is sandwiched between Daniel and Tomas in the schedule."
+        "Nadia is sandwiched between Daniel and Tomas in the schedule."
       ],
       [
-        "I believe Tomas will be covering 09:00.",
+        "Tomas has the 09:00 slot.",
         "Word is that Ayesha takes the slot straight after Priya.",
-        "Daniel and Tomas bracket Nadia, in some order."
+        "Same point as before: Apparently, Daniel and Tomas bracket Nadia, in some order."
       ],
       [
-        "I believe Tomas will be covering 09:00.",
-        "If memory serves, the 13:00 slot belongs to Nadia.",
-        "Daniel takes the slot straight after Ayesha."
+        "Tomas has the 09:00 slot.",
+        "Per the whiteboard, Nadia will be covering 13:00.",
+        "To the best of my knowledge, Ayesha and Daniel are consecutive, Ayesha first."
       ],
       [
-        "I believe Tomas will be covering 09:00.",
-        "To the best of my knowledge, in time order Daniel lands somewhere in the middle of Ayesha and Tomas.",
-        "If memory serves, the 13:00 slot belongs to Nadia.",
-        "I believe Nadia is sandwiched between Daniel and Tomas in the schedule."
+        "Tomas has the 09:00 slot.",
+        "In time order Daniel lands somewhere in the middle of Ayesha and Tomas.",
+        "Per the whiteboard, Nadia will be covering 13:00.",
+        "Nadia is sandwiched between Daniel and Tomas in the schedule."
       ],
       [
-        "I believe Tomas will be covering 09:00.",
-        "To the best of my knowledge, in time order Daniel lands somewhere in the middle of Ayesha and Tomas.",
-        "If memory serves, the 13:00 slot belongs to Nadia.",
-        "Daniel and Tomas bracket Nadia, in some order."
+        "Tomas has the 09:00 slot.",
+        "In time order Daniel lands somewhere in the middle of Ayesha and Tomas.",
+        "Per the whiteboard, Nadia will be covering 13:00.",
+        "Same point as before: Apparently, Daniel and Tomas bracket Nadia, in some order."
       ]
     ]
   },
@@ -705,16 +705,16 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "Daniel has been given packing.",
-        "Meera will be covering 15:00.",
-        "Nadia is the one running calibration.",
-        "Word is that Rohan comes on after the intake person has already started."
+        "Word is that packing duty goes to Daniel.",
+        "Apparently, the 15:00 slot belongs to Meera.",
+        "To the best of my knowledge, Nadia is the one running calibration.",
+        "Whoever runs intake is on before Rohan."
       ],
       [
-        "Daniel has been given packing.",
-        "Word is that Meera will be covering 15:00.",
-        "Nadia is the one running calibration.",
-        "Word is that Rohan comes on after the intake person has already started."
+        "Word is that packing duty goes to Daniel.",
+        "Same point as before: The 15:00 slot belongs to Meera.",
+        "To the best of my knowledge, Nadia is the one running calibration.",
+        "Whoever runs intake is on before Rohan."
       ]
     ]
   },
@@ -815,10 +815,10 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "Apparently, intake duty goes to Rohan.",
-        "The calibration holder starts ahead of Daniel.",
-        "Word is that Lukas and Nadia bracket Daniel, in some order.",
-        "Per the whiteboard, the packing holder starts ahead of Daniel."
+        "Rohan handles intake.",
+        "Word is that Daniel comes on after the calibration person has already started.",
+        "In time order Daniel lands somewhere in the middle of Lukas and Nadia.",
+        "Daniel comes on after the packing person has already started."
       ]
     ]
   },
@@ -827,46 +827,46 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "If memory serves, Nadia follows Priya at some point.",
-        "Ingrid and Rohan bracket Nadia, in some order.",
-        "Per the whiteboard, in time order Ingrid lands somewhere in the middle of Meera and Rohan.",
-        "Word is that in time order Rohan lands somewhere in the middle of Meera and Priya.",
-        "Per the whiteboard, Meera finishes up ahead of Nadia."
+        "To the best of my knowledge, Nadia follows Priya at some point.",
+        "In time order Nadia lands somewhere in the middle of Ingrid and Rohan.",
+        "Word is that Meera and Rohan bracket Ingrid, in some order.",
+        "Rohan is sandwiched between Meera and Priya in the schedule.",
+        "Nadia follows Meera at some point."
       ],
       [
-        "If memory serves, Nadia follows Priya at some point.",
-        "Ingrid and Rohan bracket Nadia, in some order.",
-        "Per the whiteboard, in time order Ingrid lands somewhere in the middle of Meera and Rohan.",
-        "If memory serves, in time order Rohan lands somewhere in the middle of Meera and Priya.",
-        "Per the whiteboard, Meera finishes up ahead of Nadia."
+        "To the best of my knowledge, Nadia follows Priya at some point.",
+        "In time order Nadia lands somewhere in the middle of Ingrid and Rohan.",
+        "Word is that Meera and Rohan bracket Ingrid, in some order.",
+        "Same point as before: Per the whiteboard, Rohan is sandwiched between Meera and Priya in the schedule.",
+        "Nadia follows Meera at some point."
       ],
       [
-        "If memory serves, Nadia follows Priya at some point.",
-        "Ingrid and Rohan bracket Nadia, in some order.",
-        "Per the whiteboard, in time order Ingrid lands somewhere in the middle of Meera and Rohan.",
-        "Word is that in time order Rohan lands somewhere in the middle of Meera and Priya.",
-        "To the best of my knowledge, Ingrid finishes up ahead of Rohan."
+        "To the best of my knowledge, Nadia follows Priya at some point.",
+        "In time order Nadia lands somewhere in the middle of Ingrid and Rohan.",
+        "Word is that Meera and Rohan bracket Ingrid, in some order.",
+        "Rohan is sandwiched between Meera and Priya in the schedule.",
+        "Ingrid finishes up ahead of Rohan."
       ],
       [
-        "If memory serves, Nadia follows Priya at some point.",
-        "Ingrid and Rohan bracket Nadia, in some order.",
-        "Per the whiteboard, in time order Ingrid lands somewhere in the middle of Meera and Rohan.",
-        "If memory serves, in time order Rohan lands somewhere in the middle of Meera and Priya.",
-        "To the best of my knowledge, Ingrid finishes up ahead of Rohan."
+        "To the best of my knowledge, Nadia follows Priya at some point.",
+        "In time order Nadia lands somewhere in the middle of Ingrid and Rohan.",
+        "Word is that Meera and Rohan bracket Ingrid, in some order.",
+        "Same point as before: Per the whiteboard, Rohan is sandwiched between Meera and Priya in the schedule.",
+        "Ingrid finishes up ahead of Rohan."
       ],
       [
-        "If memory serves, Nadia follows Priya at some point.",
-        "Ingrid and Rohan bracket Nadia, in some order.",
-        "Word is that in time order Rohan lands somewhere in the middle of Meera and Priya.",
-        "Per the whiteboard, Meera finishes up ahead of Nadia.",
-        "To the best of my knowledge, Ingrid finishes up ahead of Rohan."
+        "To the best of my knowledge, Nadia follows Priya at some point.",
+        "In time order Nadia lands somewhere in the middle of Ingrid and Rohan.",
+        "Rohan is sandwiched between Meera and Priya in the schedule.",
+        "Nadia follows Meera at some point.",
+        "Ingrid finishes up ahead of Rohan."
       ],
       [
-        "If memory serves, Nadia follows Priya at some point.",
-        "Ingrid and Rohan bracket Nadia, in some order.",
-        "If memory serves, in time order Rohan lands somewhere in the middle of Meera and Priya.",
-        "Per the whiteboard, Meera finishes up ahead of Nadia.",
-        "To the best of my knowledge, Ingrid finishes up ahead of Rohan."
+        "To the best of my knowledge, Nadia follows Priya at some point.",
+        "In time order Nadia lands somewhere in the middle of Ingrid and Rohan.",
+        "Same point as before: Per the whiteboard, Rohan is sandwiched between Meera and Priya in the schedule.",
+        "Nadia follows Meera at some point.",
+        "Ingrid finishes up ahead of Rohan."
       ]
     ]
   },
@@ -1209,17 +1209,17 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "To the best of my knowledge, Meera is off at 07:00.",
-        "Apparently, Rohan and Samuel bracket Tomas, in some order.",
-        "To the best of my knowledge, whoever runs calibration is on before Samuel.",
-        "To the best of my knowledge, Rohan comes on after the calibration person has already started.",
+        "Apparently, the 07:00 slot isn't Meera's.",
+        "Tomas is neither before both nor after both of Rohan and Samuel.",
+        "To the best of my knowledge, the calibration holder starts ahead of Samuel.",
+        "Apparently, Rohan comes on after the calibration person has already started.",
         "Word is that Ingrid steps in the moment Samuel finishes."
       ],
       [
-        "To the best of my knowledge, Meera is off at 07:00.",
-        "Word is that in time order Tomas lands somewhere in the middle of Rohan and Samuel.",
-        "To the best of my knowledge, whoever runs calibration is on before Samuel.",
-        "To the best of my knowledge, Rohan comes on after the calibration person has already started.",
+        "Apparently, the 07:00 slot isn't Meera's.",
+        "Same point as before: Tomas is neither before both nor after both of Rohan and Samuel.",
+        "To the best of my knowledge, the calibration holder starts ahead of Samuel.",
+        "Apparently, Rohan comes on after the calibration person has already started.",
         "Word is that Ingrid steps in the moment Samuel finishes."
       ]
     ]
@@ -1571,15 +1571,15 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "Word is that 11:00 is when Ingrid works.",
-        "Per the whiteboard, Lukas is neither before both nor after both of Tomas and Meera.",
-        "If memory serves, Lukas is sandwiched between Ingrid and Ayesha in the schedule."
+        "To the best of my knowledge, Ingrid will be covering 11:00.",
+        "Per the whiteboard, Lukas is sandwiched between Tomas and Meera in the schedule.",
+        "Per the whiteboard, Lukas is sandwiched between Ingrid and Ayesha in the schedule."
       ],
       [
-        "Word is that 11:00 is when Ingrid works.",
-        "The 07:00 slot belongs to Ayesha.",
-        "Apparently, the calibration holder starts ahead of Ingrid.",
-        "If memory serves, Lukas is sandwiched between Ingrid and Ayesha in the schedule."
+        "To the best of my knowledge, Ingrid will be covering 11:00.",
+        "Per the whiteboard, Ayesha has the 07:00 slot.",
+        "Whoever runs calibration is on before Ingrid.",
+        "Per the whiteboard, Lukas is sandwiched between Ingrid and Ayesha in the schedule."
       ]
     ]
   },
@@ -1674,19 +1674,19 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "If memory serves, Priya is sandwiched between Ingrid and Ayesha in the schedule.",
-        "Word is that Daniel and Ayesha bracket Ingrid, in some order.",
-        "Per the whiteboard, in time order Ayesha lands somewhere in the middle of Priya and Daniel."
+        "To the best of my knowledge, Priya is neither before both nor after both of Ingrid and Ayesha.",
+        "Word is that in time order Ingrid lands somewhere in the middle of Daniel and Ayesha.",
+        "Apparently, Priya and Daniel bracket Ayesha, in some order."
       ],
       [
-        "If memory serves, Priya is sandwiched between Ingrid and Ayesha in the schedule.",
-        "Per the whiteboard, in time order Ayesha lands somewhere in the middle of Priya and Daniel.",
-        "I believe Ayesha and Daniel bracket Ingrid, in some order."
+        "To the best of my knowledge, Priya is neither before both nor after both of Ingrid and Ayesha.",
+        "Apparently, Priya and Daniel bracket Ayesha, in some order.",
+        "Ingrid is sandwiched between Ayesha and Daniel in the schedule."
       ],
       [
-        "If memory serves, Priya is sandwiched between Ingrid and Ayesha in the schedule.",
-        "Per the whiteboard, in time order Ayesha lands somewhere in the middle of Priya and Daniel.",
-        "Word is that Ingrid is sandwiched between Ayesha and Daniel in the schedule."
+        "To the best of my knowledge, Priya is neither before both nor after both of Ingrid and Ayesha.",
+        "Apparently, Priya and Daniel bracket Ayesha, in some order.",
+        "Again, for the record: Word is that Ingrid is sandwiched between Ayesha and Daniel in the schedule."
       ]
     ]
   },
@@ -1773,9 +1773,9 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "Priya is the one running intake.",
-        "Whoever runs calibration is on before Ayesha.",
-        "Apparently, packing duty goes to Lukas."
+        "Per the whiteboard, Priya handles intake.",
+        "Per the whiteboard, the calibration holder starts ahead of Ayesha.",
+        "Per the whiteboard, Lukas has been given packing."
       ]
     ]
   },
@@ -1784,8 +1784,8 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "If memory serves, in time order Rohan lands somewhere in the middle of Ingrid and Ayesha.",
-        "To the best of my knowledge, in time order Ingrid lands somewhere in the middle of Rohan and Samuel.",
+        "Apparently, Rohan is sandwiched between Ingrid and Ayesha in the schedule.",
+        "Apparently, Ingrid is sandwiched between Rohan and Samuel in the schedule.",
         "In time order Ayesha lands somewhere in the middle of Samuel and Ingrid."
       ]
     ]
@@ -1985,21 +1985,21 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "To the best of my knowledge, Lukas is followed immediately by Ayesha.",
-        "Samuel is sandwiched between Lukas and Ingrid in the schedule.",
-        "Apparently, Ayesha is followed immediately by Ingrid."
+        "To the best of my knowledge, Ayesha steps in the moment Lukas finishes.",
+        "Lukas and Ingrid bracket Samuel, in some order.",
+        "Word is that Ayesha and Ingrid are consecutive, Ayesha first."
       ],
       [
-        "To the best of my knowledge, Lukas is followed immediately by Ayesha.",
-        "Per the whiteboard, Ingrid has no part in packing.",
-        "Word is that the packing holder starts ahead of Meera.",
-        "I believe Lukas steps in the moment Meera finishes."
+        "To the best of my knowledge, Ayesha steps in the moment Lukas finishes.",
+        "Ingrid isn't covering packing.",
+        "Per the whiteboard, whoever runs packing is on before Meera.",
+        "Word is that Lukas takes the slot straight after Meera."
       ],
       [
-        "To the best of my knowledge, Lukas is followed immediately by Ayesha.",
-        "Word is that the packing holder starts ahead of Meera.",
-        "I believe Lukas steps in the moment Meera finishes.",
-        "Apparently, Ayesha is followed immediately by Ingrid."
+        "To the best of my knowledge, Ayesha steps in the moment Lukas finishes.",
+        "Per the whiteboard, whoever runs packing is on before Meera.",
+        "Word is that Lukas takes the slot straight after Meera.",
+        "Word is that Ayesha and Ingrid are consecutive, Ayesha first."
       ]
     ]
   },
@@ -2008,15 +2008,15 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "Word is that Nadia is sandwiched between Ayesha and Daniel in the schedule.",
-        "Word is that Daniel is followed immediately by Nadia.",
-        "07:00 is when Ayesha works."
+        "Ayesha and Daniel bracket Nadia, in some order.",
+        "Nadia steps in the moment Daniel finishes.",
+        "Apparently, Ayesha will be covering 07:00."
       ],
       [
-        "Word is that Nadia is sandwiched between Ayesha and Daniel in the schedule.",
-        "If memory serves, Tomas and Ayesha bracket Priya, in some order.",
-        "In time order Daniel lands somewhere in the middle of Tomas and Priya.",
-        "Per the whiteboard, Priya and Nadia bracket Daniel, in some order."
+        "Ayesha and Daniel bracket Nadia, in some order.",
+        "Tomas and Ayesha bracket Priya, in some order.",
+        "Tomas and Priya bracket Daniel, in some order.",
+        "In time order Daniel lands somewhere in the middle of Priya and Nadia."
       ]
     ]
   },
@@ -2025,28 +2025,28 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "I believe Ingrid starts earlier in the day than Ayesha.",
-        "To the best of my knowledge, Ayesha steps in the moment Lukas finishes.",
-        "Word is that Lukas finishes up ahead of Ingrid."
+        "Apparently, Ingrid goes on before Ayesha does.",
+        "Word is that Lukas and Ayesha are consecutive, Lukas first.",
+        "Apparently, Lukas goes on before Ingrid does."
       ],
       [
-        "Per the whiteboard, Ingrid finishes up ahead of Ayesha.",
-        "To the best of my knowledge, Ayesha steps in the moment Lukas finishes.",
-        "Word is that Lukas finishes up ahead of Ingrid."
+        "Same point as before: Apparently, Ingrid goes on before Ayesha does.",
+        "Word is that Lukas and Ayesha are consecutive, Lukas first.",
+        "Apparently, Lukas goes on before Ingrid does."
       ],
       [
-        "I believe Ingrid starts earlier in the day than Ayesha.",
-        "To the best of my knowledge, Rohan is neither before both nor after both of Ingrid and Priya.",
-        "Word is that Lukas finishes up ahead of Ingrid.",
-        "Word is that Priya goes on before Lukas does.",
-        "Per the whiteboard, Ingrid won't be in for 13:00."
+        "Apparently, Ingrid goes on before Ayesha does.",
+        "To the best of my knowledge, Ingrid and Priya bracket Rohan, in some order.",
+        "Apparently, Lukas goes on before Ingrid does.",
+        "Priya starts earlier in the day than Lukas.",
+        "Apparently, Ingrid won't be in for 13:00."
       ],
       [
-        "Per the whiteboard, Ingrid finishes up ahead of Ayesha.",
-        "To the best of my knowledge, Rohan is neither before both nor after both of Ingrid and Priya.",
-        "Word is that Lukas finishes up ahead of Ingrid.",
-        "Word is that Priya goes on before Lukas does.",
-        "Per the whiteboard, Ingrid won't be in for 13:00."
+        "Same point as before: Apparently, Ingrid goes on before Ayesha does.",
+        "To the best of my knowledge, Ingrid and Priya bracket Rohan, in some order.",
+        "Apparently, Lukas goes on before Ingrid does.",
+        "Priya starts earlier in the day than Lukas.",
+        "Apparently, Ingrid won't be in for 13:00."
       ]
     ]
   },
@@ -2141,58 +2141,58 @@
     "assignments": [],
     "conflict_line_sets": [
       [
-        "Per the whiteboard, Lukas is followed immediately by Nadia.",
-        "If memory serves, Ingrid has the 11:00 slot.",
-        "Apparently, Nadia and Meera are consecutive, Nadia first."
+        "Word is that Lukas and Nadia are consecutive, Lukas first.",
+        "To the best of my knowledge, Ingrid will be covering 11:00.",
+        "Word is that Meera steps in the moment Nadia finishes."
       ],
       [
-        "I believe Lukas is followed immediately by Nadia.",
-        "If memory serves, Ingrid has the 11:00 slot.",
-        "Apparently, Nadia and Meera are consecutive, Nadia first."
+        "Same point as before: Word is that Nadia takes the slot straight after Lukas.",
+        "To the best of my knowledge, Ingrid will be covering 11:00.",
+        "Word is that Meera steps in the moment Nadia finishes."
       ],
       [
-        "Per the whiteboard, Lukas is followed immediately by Nadia.",
-        "Apparently, Nadia and Meera are consecutive, Nadia first.",
-        "Meera has the 09:00 slot."
+        "Word is that Lukas and Nadia are consecutive, Lukas first.",
+        "Word is that Meera steps in the moment Nadia finishes.",
+        "Per the whiteboard, the 09:00 slot belongs to Meera."
       ],
       [
-        "I believe Lukas is followed immediately by Nadia.",
-        "Apparently, Nadia and Meera are consecutive, Nadia first.",
-        "Meera has the 09:00 slot."
+        "Same point as before: Word is that Nadia takes the slot straight after Lukas.",
+        "Word is that Meera steps in the moment Nadia finishes.",
+        "Per the whiteboard, the 09:00 slot belongs to Meera."
       ],
       [
-        "Per the whiteboard, Lukas is followed immediately by Nadia.",
-        "Daniel has the 13:00 slot.",
-        "Meera has the 09:00 slot."
+        "Word is that Lukas and Nadia are consecutive, Lukas first.",
+        "Daniel will be covering 13:00.",
+        "Per the whiteboard, the 09:00 slot belongs to Meera."
       ],
       [
-        "I believe Lukas is followed immediately by Nadia.",
-        "Daniel has the 13:00 slot.",
-        "Meera has the 09:00 slot."
+        "Same point as before: Word is that Nadia takes the slot straight after Lukas.",
+        "Daniel will be covering 13:00.",
+        "Per the whiteboard, the 09:00 slot belongs to Meera."
       ],
       [
-        "Per the whiteboard, Lukas is followed immediately by Nadia.",
-        "Daniel comes on after the calibration person has already started.",
-        "If memory serves, Ingrid has the 11:00 slot.",
-        "Meera has the 09:00 slot."
+        "Word is that Lukas and Nadia are consecutive, Lukas first.",
+        "Per the whiteboard, whoever runs calibration is on before Daniel.",
+        "To the best of my knowledge, Ingrid will be covering 11:00.",
+        "Per the whiteboard, the 09:00 slot belongs to Meera."
       ],
       [
-        "I believe Lukas is followed immediately by Nadia.",
-        "Daniel comes on after the calibration person has already started.",
-        "If memory serves, Ingrid has the 11:00 slot.",
-        "Meera has the 09:00 slot."
+        "Same point as before: Word is that Nadia takes the slot straight after Lukas.",
+        "Per the whiteboard, whoever runs calibration is on before Daniel.",
+        "To the best of my knowledge, Ingrid will be covering 11:00.",
+        "Per the whiteboard, the 09:00 slot belongs to Meera."
       ],
       [
-        "Per the whiteboard, Lukas is followed immediately by Nadia.",
-        "Daniel comes on after the calibration person has already started.",
-        "Meera has the 09:00 slot.",
-        "To the best of my knowledge, whoever runs calibration is on before Ingrid."
+        "Word is that Lukas and Nadia are consecutive, Lukas first.",
+        "Per the whiteboard, whoever runs calibration is on before Daniel.",
+        "Per the whiteboard, the 09:00 slot belongs to Meera.",
+        "Word is that the calibration holder starts ahead of Ingrid."
       ],
       [
-        "I believe Lukas is followed immediately by Nadia.",
-        "Daniel comes on after the calibration person has already started.",
-        "Meera has the 09:00 slot.",
-        "To the best of my knowledge, whoever runs calibration is on before Ingrid."
+        "Same point as before: Word is that Nadia takes the slot straight after Lukas.",
+        "Per the whiteboard, whoever runs calibration is on before Daniel.",
+        "Per the whiteboard, the 09:00 slot belongs to Meera.",
+        "Word is that the calibration holder starts ahead of Ingrid."
       ]
     ]
   }

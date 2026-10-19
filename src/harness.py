@@ -50,7 +50,7 @@ def make_complete(args: argparse.Namespace):
                       {"role": "user", "content": user}],
             temperature=1.0,
             top_p=0.95,
-            max_tokens=1000,
+            max_tokens=2000,
             extra_body=extra_body,
             extra_headers={"X-Item-Id": item_id},
         )
@@ -69,6 +69,8 @@ def main() -> None:
     ap.add_argument("--api-key", default=None)
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--no-focus", action="store_true",
+                    help="ablation: every call relabels the whole page (plain voting)")
     ap.add_argument("--drop", default="",
                     help="fact types to ignore (ablation), comma-separated")
     args = ap.parse_args()
@@ -82,7 +84,7 @@ def main() -> None:
 
     def run_item(item: dict) -> tuple[dict, dict]:
         entry = {"id": item["id"], **parse_header(item["text"])}
-        return extract_with_model(entry, item, calls, complete)
+        return extract_with_model(entry, item, calls, complete, focus=not args.no_focus)
 
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         results = list(pool.map(run_item, items))

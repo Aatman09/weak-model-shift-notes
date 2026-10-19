@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Compare the model's labels in a saved run with the rules extractor (reference only).
 
-    python3 src/diagnose.py outputs/api_3x.json [--show]
+    python3 src/diagnose.py outputs/final_10x.json [--show] [--set visible|dev|test]
 """
 
 from __future__ import annotations
@@ -14,6 +14,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from eval_runs import load_set, set_arg              # noqa: E402
 from extract import extract_item, parse_header      # noqa: E402
 from model_extract import fact_key, parse_sample, split_item  # noqa: E402
 
@@ -23,13 +24,16 @@ SOLV = {"block", "not_block", "station", "not_station", "before",
 
 def main() -> None:
     root = Path(__file__).resolve().parent.parent
-    items = json.loads((root / "data/items.json").read_text())
+    # Reference labels come from the original notes: the proxies keep every line in place.
+    originals = {it["id"]: it for it in json.loads((root / "data/items.json").read_text())}
+    items, _ = load_set(set_arg())
     raws = json.loads(Path(sys.argv[1] + ".raw.json").read_text())
     show = "--show" in sys.argv
     tp, fn, wr, fp = (collections.Counter() for _ in range(4))
     cov, examples = [], collections.defaultdict(list)
     for it in items:
-        ref = {f["line"]: f for f in extract_item(it)["facts"] if f["type"] in SOLV}
+        ref = {f["line"]: f for f in extract_item(originals[it["id"]])["facts"]
+               if f["type"] in SOLV}
         entry = {"id": it["id"], **parse_header(it["text"])}
         _, body = split_item(it["text"])
         text = dict(body)

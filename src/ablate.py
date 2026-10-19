@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Ablation table from saved multi-sample runs. Makes no model calls.
 
-    python3 src/ablate.py outputs/local_3x.json > docs/ablations.md
+    python3 src/ablate.py outputs/final_10x.json [--set visible|dev|test]
 
 1x is the mean over each saved sample scored as its own 1x run (spread shown); 3x is the per-line vote
 over disjoint triples of samples (mean and range); 10x is the vote over all 10.
@@ -16,7 +16,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from eval_runs import run_score  # noqa: E402
+from eval_runs import load_set, run_score, set_arg  # noqa: E402
 from extract import extract_item  # noqa: E402
 from score import score  # noqa: E402
 from solve import solve_all  # noqa: E402
@@ -26,9 +26,7 @@ TYPES = ["block", "not_block", "station", "not_station", "before",
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parent.parent
-    items = json.loads((root / "data/items.json").read_text())
-    key = json.loads((root / "data/visible_key.json").read_text())
+    items, key = load_set(set_arg())
     raws = json.loads(Path(sys.argv[1] + ".raw.json").read_text())
     n = min(len(v) for v in raws.values())
 
