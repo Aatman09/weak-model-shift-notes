@@ -35,7 +35,7 @@ def make_complete(args: argparse.Namespace):
         sys.exit("The openai package is required: pip install -r requirements.txt")
     env = load_env_file(HERE.parent / ".env")
     base_url, api_key, model = resolve_config(env, args)
-    client = OpenAI(base_url=base_url, api_key=api_key, timeout=900, max_retries=0)
+    client = OpenAI(base_url=base_url, api_key=api_key, timeout=240, max_retries=0)
     print(f"model={model}  endpoint={base_url}", file=sys.stderr)
     # The graded endpoint takes {"reasoning": {"enabled": False}}. Local Ollama
     # ignores that and needs reasoning_effort="none" to switch thinking off.

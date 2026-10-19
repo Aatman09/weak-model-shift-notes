@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Ablation table from saved multi-sample runs. Makes no model calls.
+"""Ablation table from saved runs of the full system. Makes no model calls.
 
-    python3 src/ablate.py outputs/final_10x.json [--set visible|dev|test]
+    python3 src/ablate.py --set test --runs t_f_r1,t_f_r2,t_f_r3,final10_test
 
-1x is the mean over each saved sample scored as its own 1x run (spread shown); 3x is the per-line vote
-over disjoint triples of samples (mean and range); 10x is the vote over all 10.
+Each run is outputs/<name>.json.raw.json from `./run` with focused re-asking. A run's first
+call is exactly a 1x run and its first three calls exactly a 3x run, so every run gives a
+1x and a 3x score; runs with ten calls also give a 10x score. Cells are mean (min-max) over
+runs. Each arm re-scores the same saved replies with one component removed or changed.
+Arms that need different model calls (plain voting, other prompts) are separate runs.
 """
 
 from __future__ import annotations
@@ -25,39 +28,42 @@ TYPES = ["block", "not_block", "station", "not_station", "before",
          "immediately_before", "between", "station_before"]
 
 
+def cell(vals: list[float]) -> str:
+    if not vals:
+        return "n/a"
+    if len(vals) == 1:
+        return f"{vals[0]:.1%}"
+    return f"{st.mean(vals):.1%} ({min(vals):.1%}-{max(vals):.1%})"
+
+
 def main() -> None:
     items, key = load_set(set_arg())
-    raws = json.loads(Path(sys.argv[1] + ".raw.json").read_text())
-    n = min(len(v) for v in raws.values())
+    names = sys.argv[sys.argv.index("--runs") + 1].split(",")
+    root = Path(__file__).resolve().parent.parent
+    runs = [json.loads((root / "outputs" / f"{n}.json.raw.json").read_text()) for n in names]
 
-    def row(label: str, drop: tuple[str, ...] = (), minimal: bool = True,
-            threshold: float = 0.2) -> str:
-        def sc(pick: list[int]) -> float:
-            return run_score(items, key, raws, pick, drop, minimal, threshold)["macro_exact_match"]
-        singles = [sc([j]) for j in range(n)]
-        cells = [f"{st.mean(singles):.1%} ({min(singles):.1%}-{max(singles):.1%})"]
-        if n >= 3:   # 3x: mean over disjoint triples of the saved samples
-            trip = [sc(list(range(i, i + 3))) for i in range(0, n - n % 3, 3)]
-            cells.append(f"{st.mean(trip):.1%} ({min(trip):.1%}-{max(trip):.1%})")
-        else:
-            cells.append("n/a")
-        cells.append(f"{sc(list(range(10))):.1%}" if n >= 10 else "n/a")
-        return f"| {label} | " + " | ".join(cells) + " |"
+    def row(label: str, **kw) -> str:
+        def sc(raws: dict, k: int) -> float:
+            return run_score(items, key, raws, list(range(k)), **kw)["macro_exact_match"]
+        one = [sc(r, 1) for r in runs]
+        three = [sc(r, 3) for r in runs]
+        ten = [sc(r, 10) for r in runs if max(len(v) for v in r.values()) > 3]
+        return f"| {label} | {cell(one)} | {cell(three)} | {cell(ten)} |"
 
-    entries = [extract_item(it) for it in items]
-    rules, _ = solve_all(entries)
-    rules_score = score(key, rules, items)["macro_exact_match"]
-
-    print(f"| Configuration | 1x: mean (min-max of {n} runs) | 3x: vote, mean (min-max) of disjoint triples | 10x: vote |")
+    print(f"Set: {set_arg()}; runs: {', '.join(names)}\n")
+    print("| Configuration | 1x | 3x | 10x |")
     print("|---|---|---|---|")
-    print(row("Full system (model labels + solver + minimal-conflict citations)"))
-    print(row("- majority vote (accept only labels most samples agree on)", threshold=0.5))
-    print(row("- cite every constraint instead of a minimal conflict", minimal=False))
+    print(row("Full system"))
+    print(row("- parser fallback for free-form replies", salvage=False))
+    print(row("- low vote threshold (strict majority instead)", threshold=0.5))
+    print(row("- minimal-conflict citations (cite every constraint)", minimal=False))
     for t in TYPES:
         print(row(f"- ignore `{t}` labels", drop=(t,)))
-    print(f"| Rules-only extractor + solver (no model; not a valid submission) "
-          f"| {rules_score:.1%} | {rules_score:.1%} | {rules_score:.1%} |")
-    print("| One-shot Granite, no harness (from the brief) | 0.0% | n/a | n/a |")
+    if set_arg() == "visible":
+        rules, _ = solve_all([extract_item(it) for it in items])
+        r = score(key, rules, items)["macro_exact_match"]
+        print(f"| Rules-only extractor + solver (no model; not a valid submission) "
+              f"| {r:.1%} | {r:.1%} | {r:.1%} |")
 
 
 if __name__ == "__main__":

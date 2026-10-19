@@ -23,12 +23,13 @@ from solve import solve_all               # noqa: E402
 
 def run_score(items: list[dict], key: dict, raws: dict[str, list[str]],
               pick: list[int], drop: tuple[str, ...] = (),
-              minimal: bool = True, threshold: float = 0.2) -> dict:
+              minimal: bool = True, threshold: float = 0.2,
+              salvage: bool = True) -> dict:
     entries = []
     for it in items:
         entry = {"id": it["id"], **parse_header(it["text"])}
         _, body = split_item(it["text"])
-        samples = [parse_sample(raws[it["id"]][j], entry, body) for j in pick
+        samples = [parse_sample(raws[it["id"]][j], entry, body, salvage) for j in pick
                    if j < len(raws[it["id"]])]       # focused runs may stop early
         chosen = vote(samples, body, threshold)
         facts = [{"line": ln, **f, "text": t} for ln, t in body

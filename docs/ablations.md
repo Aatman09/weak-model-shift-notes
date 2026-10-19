@@ -1,43 +1,67 @@
-| Configuration | 1x: mean (min-max of 10 runs) | 3x: vote, mean (min-max) of disjoint triples | 10x: vote |
+# Ablations and results
+
+All numbers are macro exact match, scored with the provided scorer, on the provided endpoint (`ibm-granite/granite-4.2-8b`, temperature 1.0, top_p 0.95, thinking off). Cells are mean (min-max) over independent runs; a run's first call is a 1x run and its first three calls a 3x run. Nothing here is tuned on the **test** set.
+
+## Visible notes (60 items)
+Set: visible; runs: f8_vis, f8_vis_r2, f8_vis_r3, final10_visible
+
+| Configuration | 1x | 3x | 10x |
 |---|---|---|---|
-| Full system (model labels + solver + minimal-conflict citations) | 65.0% (56.7%-71.7%) | 72.8% (70.0%-76.7%) | 73.3% |
-| - majority vote (accept only labels most samples agree on) | 65.0% (56.7%-71.7%) | 72.2% (68.3%-76.7%) | 70.0% |
-| - cite every constraint instead of a minimal conflict | 41.2% (33.3%-45.0%) | 46.7% (45.0%-48.3%) | 48.3% |
-| - ignore `block` labels | 39.5% (33.3%-48.3%) | 45.6% (43.3%-48.3%) | 45.0% |
-| - ignore `not_block` labels | 49.7% (45.0%-55.0%) | 54.4% (51.7%-58.3%) | 55.0% |
-| - ignore `station` labels | 39.8% (35.0%-45.0%) | 44.4% (40.0%-48.3%) | 45.0% |
-| - ignore `not_station` labels | 50.8% (45.0%-55.0%) | 56.7% (55.0%-60.0%) | 56.7% |
-| - ignore `before` labels | 48.3% (43.3%-53.3%) | 53.9% (53.3%-55.0%) | 53.3% |
-| - ignore `immediately_before` labels | 41.3% (35.0%-46.7%) | 47.8% (46.7%-50.0%) | 46.7% |
-| - ignore `between` labels | 27.8% (21.7%-31.7%) | 29.4% (28.3%-31.7%) | 28.3% |
-| - ignore `station_before` labels | 27.0% (21.7%-31.7%) | 31.7% (30.0%-33.3%) | 30.0% |
+| Full system | 58.8% (56.7%-60.0%) | 70.0% (68.3%-73.3%) | 71.7% |
+| - parser fallback for free-form replies | 58.3% (56.7%-60.0%) | 68.3% (65.0%-70.0%) | 71.7% |
+| - low vote threshold (strict majority instead) | 58.8% (56.7%-60.0%) | 69.6% (66.7%-73.3%) | 70.0% |
+| - minimal-conflict citations (cite every constraint) | 37.5% (35.0%-40.0%) | 46.2% (41.7%-51.7%) | 48.3% |
+| - ignore `block` labels | 37.5% (36.7%-38.3%) | 46.7% (40.0%-51.7%) | 48.3% |
+| - ignore `not_block` labels | 43.8% (41.7%-48.3%) | 53.3% (50.0%-56.7%) | 51.7% |
+| - ignore `station` labels | 38.3% (36.7%-40.0%) | 46.7% (45.0%-48.3%) | 48.3% |
+| - ignore `not_station` labels | 45.8% (45.0%-46.7%) | 55.0% (51.7%-58.3%) | 53.3% |
+| - ignore `before` labels | 48.8% (46.7%-50.0%) | 56.2% (55.0%-58.3%) | 58.3% |
+| - ignore `immediately_before` labels | 38.8% (35.0%-40.0%) | 47.1% (45.0%-50.0%) | 46.7% |
+| - ignore `between` labels | 25.8% (23.3%-28.3%) | 27.5% (26.7%-28.3%) | 28.3% |
+| - ignore `station_before` labels | 24.6% (21.7%-28.3%) | 27.9% (26.7%-30.0%) | 26.7% |
 | Rules-only extractor + solver (no model; not a valid submission) | 100.0% | 100.0% | 100.0% |
-| One-shot Granite, no harness (from the brief) | 0.0% | n/a | n/a |
 
-## Re-worded notes (held-out proxy)
+## Dev: every line re-worded (used for tuning)
+Set: dev; runs: f8_dev, f8_dev_r2, f8_dev_r3, final10_dev
 
-`src/paraphrase.py` re-renders every constraint line in a phrasing pool and hedge set that is
-in neither the visible notes nor the model prompt; the truth and the key are unchanged
-(conflict statements are mapped to the new wording). Filler, wish and history lines are
-untouched. 10 samples per item.
-
-| Notes | 1x: mean (min-max of 10 runs) | 3x: mean (min-max) of disjoint triples | 10x |
+| Configuration | 1x | 3x | 10x |
 |---|---|---|---|
-| Visible wording | 65.0% (56.7%-71.7%) | 72.8% (70.0%-76.7%) | 73.3% |
-| Re-worded constraint lines | 45.3% (41.7%-50.0%) | 52.2% (50.0%-55.0%) | 55.0% |
-| Rules-only extractor on re-worded notes | 0.0% | 0.0% | 0.0% |
+| Full system | 51.3% (48.3%-53.3%) | 67.1% (63.3%-70.0%) | 66.7% |
+| - parser fallback for free-form replies | 50.4% (46.7%-53.3%) | 65.8% (63.3%-70.0%) | 63.3% |
+| - low vote threshold (strict majority instead) | 51.3% (48.3%-53.3%) | 63.8% (61.7%-66.7%) | 63.3% |
+| - minimal-conflict citations (cite every constraint) | 30.8% (25.0%-35.0%) | 41.7% (38.3%-45.0%) | 43.3% |
+| - ignore `block` labels | 29.6% (28.3%-30.0%) | 42.5% (38.3%-46.7%) | 41.7% |
+| - ignore `not_block` labels | 41.7% (38.3%-45.0%) | 55.4% (53.3%-58.3%) | 51.7% |
+| - ignore `station` labels | 30.4% (26.7%-33.3%) | 41.7% (40.0%-45.0%) | 36.7% |
+| - ignore `not_station` labels | 38.3% (33.3%-43.3%) | 49.6% (46.7%-53.3%) | 50.0% |
+| - ignore `before` labels | 40.4% (38.3%-41.7%) | 52.5% (50.0%-55.0%) | 51.7% |
+| - ignore `immediately_before` labels | 31.2% (26.7%-38.3%) | 43.3% (36.7%-48.3%) | 43.3% |
+| - ignore `between` labels | 28.3% (25.0%-31.7%) | 32.9% (31.7%-35.0%) | 31.7% |
+| - ignore `station_before` labels | 21.3% (20.0%-25.0%) | 26.7% (25.0%-28.3%) | 26.7% |
 
-Reproduce: `python3 src/paraphrase.py`, then run the system on `data/heldout_proxy/items.json`
-and score with `python3 src/eval_runs.py <run> --proxy`.
+## Test: every line re-worded, frozen (never tuned on)
+Set: test; runs: t_f_r1, t_f_r2, t_f_r3, final10_test
 
-## Prompt iterations (real endpoint, 3 samples each, mean 1x / 3x vote)
+| Configuration | 1x | 3x | 10x |
+|---|---|---|---|
+| Full system | 44.2% (35.0%-51.7%) | 57.9% (53.3%-65.0%) | 63.3% |
+| - parser fallback for free-form replies | 42.9% (31.7%-51.7%) | 52.9% (48.3%-60.0%) | 60.0% |
+| - low vote threshold (strict majority instead) | 44.2% (35.0%-51.7%) | 58.8% (55.0%-63.3%) | 61.7% |
+| - minimal-conflict citations (cite every constraint) | 26.3% (21.7%-31.7%) | 36.7% (33.3%-40.0%) | 40.0% |
+| - ignore `block` labels | 27.9% (21.7%-35.0%) | 37.9% (35.0%-41.7%) | 40.0% |
+| - ignore `not_block` labels | 34.6% (28.3%-41.7%) | 46.7% (45.0%-51.7%) | 51.7% |
+| - ignore `station` labels | 29.2% (23.3%-36.7%) | 38.3% (33.3%-43.3%) | 40.0% |
+| - ignore `not_station` labels | 32.1% (21.7%-40.0%) | 42.5% (38.3%-50.0%) | 46.7% |
+| - ignore `before` labels | 32.9% (26.7%-40.0%) | 44.2% (38.3%-48.3%) | 46.7% |
+| - ignore `immediately_before` labels | 26.7% (21.7%-31.7%) | 39.2% (35.0%-41.7%) | 48.3% |
+| - ignore `between` labels | 21.7% (16.7%-26.7%) | 26.7% (21.7%-30.0%) | 28.3% |
+| - ignore `station_before` labels | 20.0% (16.7%-23.3%) | 25.4% (21.7%-28.3%) | 26.7% |
 
-| Version | 1x | 3x |
+## Prompt and voting variants (separate runs)
+
+| Variant | 1x | 3x |
 |---|---|---|
-| v1: first line format and rubric | 40.0% | 43.3% |
-| v2: full rubric (direction, `between`, station lines), "never hesitate" | 55.0% | 60.0% |
-| v3: + failed requests are `none`, token cap 600 to 1000, abstain + lower vote threshold | 54.4% | 65.0% |
-| v4: + "when unsure, label it", extra `not_station` example | 63.3% | 70.0% |
-| v4 on a fresh 10-sample run (final) | 65.0% | 72.8% |
-
-Local Ollama copy (`granite4.2:8b`, Q4_K_M) with the v1 prompt: 34.4% at 1x, 36.7% at 3x.
+| Old prompt (tuned on visible), test | 35.0% | 38.3% |
+| New prompt, plain voting (--no-focus), test | 53.3% | 68.3% |
+| New prompt, plain voting, dev (mean of 3) | 52.2% (50.0%-53.3%) | 59.4% (58.3%-61.7%) |
+| New prompt, plain voting, visible (mean of 3) | 58.9% (58.3%-60.0%) | 67.8% (63.3%-73.3%) |

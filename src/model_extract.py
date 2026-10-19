@@ -198,8 +198,8 @@ QUOTED = re.compile(r"^\s*L?(\d+)\s*[|:]\s*[\"'].*?[\"']\s*(?:->|\u2192)\s*([a-z
 LABEL = re.compile(r"^\s*L?(\d+)\s*[|:]\s*([a-z_]+)\s*(?:[|:]\s*(.*))?$", re.I)
 
 
-def parse_sample(raw: str, entry: dict[str, Any],
-                 body: list[tuple[int, str]]) -> dict[int, Fact | None]:
+def parse_sample(raw: str, entry: dict[str, Any], body: list[tuple[int, str]],
+                 salvage: bool = True) -> dict[int, Fact | None]:
     """line_no -> validated fact (None = labelled none / unusable)."""
     wanted = {i for i, _ in body}
     out: dict[int, Fact | None] = {}
@@ -220,7 +220,7 @@ def parse_sample(raw: str, entry: dict[str, Any],
             out[ln] = fact_from(kind, rest, entry)
     # Fallback for replies that drift into free-form reasoning: for a line the strict parse
     # never saw, use the last well-formed "<type> | <args>" in the text after its L<n> mention.
-    marks = list(re.finditer(r"\bL(\d+)\b", raw))
+    marks = list(re.finditer(r"\bL(\d+)\b", raw)) if salvage else []
     for j, mk in enumerate(marks):
         ln = int(mk.group(1))
         if ln not in wanted or ln in out:
