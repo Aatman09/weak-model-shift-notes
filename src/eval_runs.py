@@ -27,6 +27,8 @@ def run_score(items: list[dict], key: dict, raws: dict[str, list[str]],
               salvage: bool = True) -> dict:
     entries = []
     for it in items:
+        if it["id"] not in raws:       # partial run (--limit)
+            continue
         entry = {"id": it["id"], **parse_header(it["text"])}
         _, body = split_item(it["text"])
         samples = [parse_sample(raws[it["id"]][j], entry, body, salvage) for j in pick

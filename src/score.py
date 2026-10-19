@@ -75,7 +75,7 @@ submission is on the cliff, which the headline deliberately does not:
                         silent on the rest is not a better score than citing
                         well on 20 of 20.
 
-Submission forms, keyed by item id (see example_answers.json):
+Submission forms, keyed by item id:
 
   {"case": "unique",       "assignment":  {"<name>": {"block": "..", "station": ".."}, ...}}
   {"case": "ambiguous",    "assignments": [ {...}, {...} ]}

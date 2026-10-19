@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -19,13 +20,59 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from extract import parse_header          # noqa: E402  (header is structural, not free text)
 from model_extract import extract_with_model  # noqa: E402
-from oneshot import HERE, load_env_file, resolve_config  # noqa: E402
 from solve import solve_all               # noqa: E402
 
 try:
     from openai import OpenAI
 except ImportError:  # pragma: no cover
     OpenAI = None
+
+HERE = Path(__file__).resolve().parent
+DEFAULT_MODEL = "ibm-granite/granite-4.2-8b"
+
+
+def load_env_file(path: Path) -> dict:
+    """Minimal .env reader (KEY=VALUE lines). No dependency, no printing."""
+    out = {}
+    if not path.exists():
+        return out
+    for line in path.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        out[key.strip()] = value.strip().strip('"').strip("'")
+    return out
+
+
+def resolve_config(env: dict, args):
+    """Find base URL / key / model: CLI > standard names > .env heuristics."""
+
+    def pick(explicit, standard, needles, default=None):
+        if explicit:
+            return explicit
+        for name in standard:
+            value = os.environ.get(name) or env.get(name)
+            if value:
+                return value
+        for source in (env, os.environ):
+            for key, value in source.items():
+                if value and any(n in key.upper() for n in needles):
+                    return value
+        return default
+
+    base_url = pick(args.base_url,
+                    ["OPENAI_BASE_URL", "OPENAI_API_BASE", "BASE_URL"],
+                    ["URL", "BASE"])
+    api_key = pick(args.api_key, ["OPENAI_API_KEY", "API_KEY"], ["KEY"])
+    model = pick(args.model, ["MODEL_ID", "OPENAI_MODEL", "MODEL"],
+                 ["MODEL"], DEFAULT_MODEL)
+    if not base_url:
+        sys.exit("No base URL found: pass --base-url or put one in .env")
+    if not api_key:
+        sys.exit("No API key found: pass --api-key or put one in .env")
+    return base_url, api_key, model
+
 
 CALLS = {"1x": 1, "3x": 3, "10x": 10}
 
