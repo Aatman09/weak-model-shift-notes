@@ -175,6 +175,8 @@ def fact_key(fact: Fact | None) -> str:
     return json.dumps(f, sort_keys=True)
 
 
+# The model often keeps talking after a valid label on the same line; keep only the label.
+CUT = r"<-|#|->|\u2192|\(|\?|;|\.\s|:\s"
 LABEL = re.compile(r"^\s*L?(\d+)\s*[|:]\s*([a-z_]+)\s*(?:[|:]\s*(.*))?$", re.I)
 
 
@@ -184,7 +186,7 @@ def parse_sample(raw: str, entry: dict[str, Any],
     wanted = {i for i, _ in body}
     out: dict[int, Fact | None] = {}
     for row in raw.splitlines():
-        m = LABEL.match(re.split(r"<-|#", row)[0])
+        m = LABEL.match(re.split(CUT, row)[0])
         if not m:
             continue
         ln, kind, rest = int(m.group(1)), m.group(2).lower(), (m.group(3) or "")

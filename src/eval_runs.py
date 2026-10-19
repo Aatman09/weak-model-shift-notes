@@ -22,7 +22,8 @@ from solve import solve_all               # noqa: E402
 
 
 def run_score(items: list[dict], key: dict, raws: dict[str, list[str]],
-              pick: list[int], drop: tuple[str, ...] = ()) -> dict:
+              pick: list[int], drop: tuple[str, ...] = (),
+              minimal: bool = True) -> dict:
     entries = []
     for it in items:
         entry = {"id": it["id"], **parse_header(it["text"])}
@@ -32,7 +33,7 @@ def run_score(items: list[dict], key: dict, raws: dict[str, list[str]],
         facts = [{"line": ln, **f, "text": t} for ln, t in body
                  if (f := chosen.get(ln)) is not None]
         entries.append({**entry, "facts": facts})
-    answers, _ = solve_all(entries, drop)
+    answers, _ = solve_all(entries, drop, minimal)
     return score(key, answers, items)
 
 

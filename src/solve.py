@@ -138,15 +138,20 @@ def to_assignment(entry: Entry, sol: Candidate) -> dict[str, dict[str, str]]:
     return a
 
 
-def solve_all(facts: list[Entry],
-              drop: tuple[str, ...] = ()) -> tuple[dict[str, Answer], dict[str, int]]:
+def solve_all(facts: list[Entry], drop: tuple[str, ...] = (),
+              minimal: bool = True) -> tuple[dict[str, Answer], dict[str, int]]:
+    """minimal=False is an ablation: cite every constraint instead of a minimal conflict."""
     answers: dict[str, Answer] = {}
     stats: dict[str, int] = {"unique": 0, "ambiguous": 0, "inconsistent": 0, "many": 0}
     for entry in facts:
         sols = enumerate_solutions(entry, drop)
         n = len(sols)
         if n == 0:
-            core = minimal_conflict(entry, drop)
+            if minimal:
+                core = minimal_conflict(entry, drop)
+            else:
+                core = [f for f in entry["facts"]
+                        if f["type"] not in drop and make_pred(f) is not None]
             answers[entry["id"]] = {
                 "case": "inconsistent",
                 "conflicts": [f["text"] for f in core],
