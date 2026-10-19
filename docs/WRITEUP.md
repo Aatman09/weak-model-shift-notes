@@ -55,7 +55,7 @@ Which labels carry the score (visible, 1x, ignoring a type): `between` and `stat
 
 ## Extraction: model-based or symbolic, and different authors
 
-Constraint extraction is **model-based**. The **header** (rota, blocks, stations, station holders) is parsed with a regular expression and the **solver** is symbolic; the rules extractor is not part of the submission. With different authors the model sees wording outside my examples: the test set shows a drop of about 15 points at 1x and 10 at 10x relative to the visible notes, concentrated in ordering constraints. The header regex assumes the generator's header sentence and would need a model-based replacement for free-form headers.
+Constraint extraction is **model-based**. The **header** (rota, blocks, stations, station holders) is parsed with a regular expression and the **solver** is symbolic; the rules extractor is not part of the submission. With different authors the model sees wording outside my examples: the test set shows a drop of about 15 points at 1x and 8 at 10x relative to the visible notes, concentrated in ordering constraints. The header regex assumes the generator's header sentence and would need a model-based replacement for free-form headers.
 
 ## With a month
 

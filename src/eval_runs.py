@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Offline scoring of a multi-sample run from its saved raw replies (no model calls).
 
-    python3 src/eval_runs.py outputs/final_10x.json [--set visible|dev|test]
+    python3 src/eval_runs.py outputs/final10_test.json [--set visible|dev|test]
 
 Scores every single sample as a 1x run, and the per-line majority vote over the first
 k samples (k = 2..n) as a kx run.

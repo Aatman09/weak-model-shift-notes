@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Compare the model's labels in a saved run with the rules extractor (reference only).
 
-    python3 src/diagnose.py outputs/final_10x.json [--show] [--set visible|dev|test]
+    python3 src/diagnose.py outputs/final10_test.json [--show] [--set visible|dev|test]
 """
 
 from __future__ import annotations
